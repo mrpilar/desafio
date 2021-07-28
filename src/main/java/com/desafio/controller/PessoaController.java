@@ -18,7 +18,7 @@ public class PessoaController {
 
 	@Autowired
 	PessoaRepository pessoaRepository;
-
+	
 	@GetMapping("/pessoas")
 	public List<Pessoa> listaProdutos() {
 		return pessoaRepository.findAll();
@@ -35,7 +35,7 @@ public class PessoaController {
 
 	}
 
-	@PutMapping("/produto/{id}")
+	@PutMapping("/pessoa/{id}")
 
 	public Pessoa atualizaPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa) {
 		return pessoaRepository.save(pessoa);

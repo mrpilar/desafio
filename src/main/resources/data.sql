@@ -1,0 +1,3 @@
+
+INSERT INTO PESSOA(nome, DATA_NASCIMENTO, logradouro, cep, numero, cidade) VALUES('MARCELO PILAR', '03/03/1988', 'RUA FREDERICO', '99999', 170, 'RECIFE');
+
