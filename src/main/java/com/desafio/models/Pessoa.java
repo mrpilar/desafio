@@ -21,6 +21,7 @@ public class Pessoa implements Serializable {
 	private String cep;
 	private String numero;
 	private String cidade;
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -34,6 +35,7 @@ public class Pessoa implements Serializable {
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -80,51 +82,65 @@ public class Pessoa implements Serializable {
 			return false;
 		return true;
 	}
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public String getDataNascimento() {
 		return dataNascimento;
 	}
+
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
+
 	public String getLogradouro() {
 		return logradouro;
 	}
+
 	public void setLogradouro(String logradouro) {
 		this.logradouro = logradouro;
 	}
+
 	public String getCep() {
 		return cep;
 	}
+
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
+
 	public String getNumero() {
 		return numero;
 	}
+
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
+
 	public String getCidade() {
 		return cidade;
 	}
+
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	
 }
