@@ -1,10 +1,12 @@
 package com.desafio.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,37 +25,40 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value ="/api")
-@Api(value="API REST cadastro de Pessoas e seu Endereco")
-@CrossOrigin(origins="*")
+@RequestMapping(value = "/api")
+@Api(value = "API REST cadastro de Pessoas e seu Endereco")
+@CrossOrigin(origins = "*")
 public class PessoaController {
 
 	@Autowired
 	PessoaRepository pessoaRepository;
 
 	@GetMapping("/pessoas")
-	@ApiOperation(value="Retorna uma lista de pessoas")
+	@ApiOperation(value = "Retorna uma lista de pessoas")
 	public List<Pessoa> listaPessoa() {
 		return pessoaRepository.findAll();
 	}
 
 	@GetMapping("/pessoa/{id}")
-	@ApiOperation(value="Retorna uma pessoa especifica")
+	@ApiOperation(value = "Retorna uma pessoa especifica")
 	public Pessoa pessoaUnica(@PathVariable(value = "id") long id) {
 		return pessoaRepository.findById(id);
 	}
 
 	@PostMapping("/pessoa")
 	@Transactional
-	@ApiOperation(value="Salva uma pessoa e seu endereco")
-	public Pessoa salvaPessoa(@RequestBody Pessoa pessoa, UriComponentsBuilder uriBuilder) {
-		return pessoaRepository.save(pessoa);
+	@ApiOperation(value = "Salva uma pessoa e seu endereco")
+	public ResponseEntity<Pessoa> salvaPessoa(@RequestBody Pessoa pessoa, UriComponentsBuilder uriBuilder) {
+		pessoaRepository.save(pessoa);
+		
+		URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(pessoa.getId()).toUri();
+		return ResponseEntity.created(uri).body(pessoa);
 
 	}
 
 	@PutMapping("/pessoa/{id}")
 	@Transactional
-	@ApiOperation(value="Atualiza uma pessoa")
+	@ApiOperation(value = "Atualiza uma pessoa")
 	public Pessoa atualizaPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa) {
 		return pessoaRepository.save(pessoa);
 
@@ -61,7 +66,7 @@ public class PessoaController {
 
 	@DeleteMapping("/pessoa/{id}")
 	@Transactional
-	@ApiOperation(value="Deleta uma pessoa")
+	@ApiOperation(value = "Deleta uma pessoa")
 	public void deletaPessoa(@PathVariable Long id) {
 		pessoaRepository.deleteById(id);
 
