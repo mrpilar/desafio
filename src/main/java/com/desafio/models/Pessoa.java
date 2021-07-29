@@ -1,6 +1,7 @@
 package com.desafio.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class Pessoa implements Serializable {
 	private String dataNascimento;
 	private String logradouro;
 	private String cep;
-	private String numero;
+	private int numero;
 	private String cidade;
 
 	@Override
@@ -32,7 +33,7 @@ public class Pessoa implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((logradouro == null) ? 0 : logradouro.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		result = prime * result + numero;
 		return result;
 	}
 
@@ -75,10 +76,7 @@ public class Pessoa implements Serializable {
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
-		if (numero == null) {
-			if (other.numero != null)
-				return false;
-		} else if (!numero.equals(other.numero))
+		if (numero != other.numero)
 			return false;
 		return true;
 	}
@@ -123,11 +121,11 @@ public class Pessoa implements Serializable {
 		this.cep = cep;
 	}
 
-	public String getNumero() {
+	public int getNumero() {
 		return numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 

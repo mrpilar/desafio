@@ -2,6 +2,8 @@ package com.desafio.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.desafio.models.Pessoa;
 import com.desafio.repository.PessoaRepository;
@@ -30,7 +33,7 @@ public class PessoaController {
 
 	@GetMapping("/pessoas")
 	@ApiOperation(value="Retorna uma lista de pessoas")
-	public List<Pessoa> listaProdutos() {
+	public List<Pessoa> listaPessoa() {
 		return pessoaRepository.findAll();
 	}
 
@@ -41,13 +44,15 @@ public class PessoaController {
 	}
 
 	@PostMapping("/pessoa")
+	@Transactional
 	@ApiOperation(value="Salva uma pessoa e seu endereco")
-	public Pessoa salvaPessoa(@RequestBody Pessoa pessoa) {
+	public Pessoa salvaPessoa(@RequestBody Pessoa pessoa, UriComponentsBuilder uriBuilder) {
 		return pessoaRepository.save(pessoa);
 
 	}
 
 	@PutMapping("/pessoa/{id}")
+	@Transactional
 	@ApiOperation(value="Atualiza uma pessoa")
 	public Pessoa atualizaPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa) {
 		return pessoaRepository.save(pessoa);
@@ -55,6 +60,7 @@ public class PessoaController {
 	}
 
 	@DeleteMapping("/pessoa/{id}")
+	@Transactional
 	@ApiOperation(value="Deleta uma pessoa")
 	public void deletaPessoa(@PathVariable Long id) {
 		pessoaRepository.deleteById(id);
