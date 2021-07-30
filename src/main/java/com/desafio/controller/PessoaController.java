@@ -47,9 +47,8 @@ public class PessoaController {
 
 		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 		if (pessoa.isPresent()) {
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok(pessoa.get());
 		}
-
 		return ResponseEntity.notFound().build();
 	}
 
