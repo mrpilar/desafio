@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +49,9 @@ public class PessoaController {
 	@PostMapping("/pessoa")
 	@Transactional
 	@ApiOperation(value = "Salva uma pessoa e seu endereco")
-	public ResponseEntity<Pessoa> salvaPessoa(@RequestBody Pessoa pessoa, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<Pessoa> salvaPessoa(@RequestBody @Valid Pessoa pessoa, UriComponentsBuilder uriBuilder) {
 		pessoaRepository.save(pessoa);
-		
+
 		URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(pessoa.getId()).toUri();
 		return ResponseEntity.created(uri).body(pessoa);
 

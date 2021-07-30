@@ -1,14 +1,15 @@
 package com.desafio.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Pessoa implements Serializable {
@@ -18,13 +19,18 @@ public class Pessoa implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotNull @NotEmpty
 	private String nome;
+	@NotNull @NotEmpty
 	private String dataNascimento;
+	@NotNull @NotEmpty
 	private String logradouro;
+	@NotNull @NotEmpty
 	private String cep;
+	@NotNull
 	private int numero;
+	@NotNull @NotEmpty
 	private String cidade;
-	
 	
 	public Pessoa() {
 		
