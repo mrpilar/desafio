@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.contactura.contactura.model.Contactura;
 import com.desafio.models.Pessoa;
 import com.desafio.repository.PessoaRepository;
 
@@ -60,26 +61,31 @@ public class PessoaController {
 
 		URI uri = uriBuilder.path("/pessoa/{id}").buildAndExpand(pessoa.getId()).toUri();
 		return ResponseEntity.created(uri).body(pessoa);
-
 	}
 
 	@PutMapping("/pessoa/{id}")
 	@Transactional
 	@ApiOperation(value = "Atualiza uma pessoa")
-	public ResponseEntity<Pessoa> atualizaPessoa(@PathVariable Long id, @RequestBody @Valid Pessoa pessoa) {
+	public ResponseEntity<Pessoa> atualizaPessoa(@PathVariable long id, @RequestBody @Valid Pessoa pessoa) {
+		
 		pessoaRepository.save(pessoa);
 
 		return ResponseEntity.ok(pessoa);
-
+		
 	}
 
 	@DeleteMapping("/pessoa/{id}")
 	@Transactional
 	@ApiOperation(value = "Deleta uma pessoa")
 	public ResponseEntity<?> deletaPessoa(@PathVariable Long id) {
-		pessoaRepository.deleteById(id);
-
-		return ResponseEntity.ok().build();
+		Optional<Pessoa> optional = pessoaRepository.findById(id);
+		
+		if (optional.isPresent()) {
+			pessoaRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		
+		return ResponseEntity.notFound().build();
 
 	}
 
