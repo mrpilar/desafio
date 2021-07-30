@@ -2,6 +2,7 @@ package com.desafio.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -42,8 +43,14 @@ public class PessoaController {
 
 	@GetMapping("/pessoa/{id}")
 	@ApiOperation(value = "Retorna uma pessoa especifica")
-	public Pessoa pessoaUnica(@PathVariable(value = "id") long id) {
-		return pessoaRepository.findById(id);
+	public ResponseEntity<Pessoa> pessoaUnica(@PathVariable Long id) {
+
+		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
+		if (pessoa.isPresent()) {
+			return ResponseEntity.ok().build();
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("/pessoa")
@@ -60,16 +67,20 @@ public class PessoaController {
 	@PutMapping("/pessoa/{id}")
 	@Transactional
 	@ApiOperation(value = "Atualiza uma pessoa")
-	public Pessoa atualizaPessoa(@PathVariable Long id, @RequestBody Pessoa pessoa) {
-		return pessoaRepository.save(pessoa);
+	public ResponseEntity<Pessoa> atualizaPessoa(@PathVariable Long id, @RequestBody @Valid Pessoa pessoa) {
+		pessoaRepository.save(pessoa);
+
+		return ResponseEntity.ok(pessoa);
 
 	}
 
 	@DeleteMapping("/pessoa/{id}")
 	@Transactional
 	@ApiOperation(value = "Deleta uma pessoa")
-	public void deletaPessoa(@PathVariable Long id) {
+	public ResponseEntity<?> deletaPessoa(@PathVariable Long id) {
 		pessoaRepository.deleteById(id);
+
+		return ResponseEntity.ok().build();
 
 	}
 
