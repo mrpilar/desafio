@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.contactura.contactura.model.Contactura;
 import com.desafio.models.Pessoa;
 import com.desafio.repository.PessoaRepository;
+import com.desafio.service.PessoaService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +36,9 @@ public class PessoaController {
 	@Autowired
 	PessoaRepository pessoaRepository;
 
+	@Autowired
+	PessoaService pessoaService;
+
 	@GetMapping("/pessoas")
 	@ApiOperation(value = "Retorna uma lista de pessoas")
 	public List<Pessoa> listaPessoa() {
@@ -45,7 +48,6 @@ public class PessoaController {
 	@GetMapping("/pessoa/{id}")
 	@ApiOperation(value = "Retorna uma pessoa especifica")
 	public ResponseEntity<Pessoa> pessoaUnica(@PathVariable Long id) {
-
 		Optional<Pessoa> pessoa = pessoaRepository.findById(id);
 		if (pessoa.isPresent()) {
 			return ResponseEntity.ok(pessoa.get());
@@ -66,12 +68,15 @@ public class PessoaController {
 	@PutMapping("/pessoa/{id}")
 	@Transactional
 	@ApiOperation(value = "Atualiza uma pessoa")
-	public ResponseEntity<Pessoa> atualizaPessoa(@PathVariable long id, @RequestBody @Valid Pessoa pessoa) {
+	public ResponseEntity<Pessoa> atualizaPessoa(@PathVariable Long id, @RequestBody @Valid Pessoa obj) {
+		Optional<Pessoa> optional = pessoaRepository.findById(id);
 		
-		pessoaRepository.save(pessoa);
-
-		return ResponseEntity.ok(pessoa);
+		if (optional.isPresent()) {
+			obj = pessoaService.atualizaPessoa(id, obj);
+			return ResponseEntity.ok().body(obj);
+		}
 		
+		return ResponseEntity.notFound().build();
 	}
 
 	@DeleteMapping("/pessoa/{id}")
@@ -79,12 +84,12 @@ public class PessoaController {
 	@ApiOperation(value = "Deleta uma pessoa")
 	public ResponseEntity<?> deletaPessoa(@PathVariable Long id) {
 		Optional<Pessoa> optional = pessoaRepository.findById(id);
-		
+
 		if (optional.isPresent()) {
 			pessoaRepository.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
-		
+
 		return ResponseEntity.notFound().build();
 
 	}
